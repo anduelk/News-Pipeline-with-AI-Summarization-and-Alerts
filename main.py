@@ -2,7 +2,8 @@ from app.clients.api_client import APIClient
 from app.services.news_service import fetch_news
 from app.services.processor import filter_articles
 from app.services.storage_service import init_db, save_articles
-from app.service.notification import send_email
+from app.services.notification import send_email
+from app.services.ai_service import AIService
 from app.scheduler import run_forever
 from app.config import BASE_URL, CHECK_INTERVAL
 
@@ -15,6 +16,9 @@ def pipeline():
         send_email(articles)
     
     print(f"new article: {new_count}")
+
+    ai=AIService()
+    articles = ai.analyze_articles(articles)
 
 if __name__ == "__main__":
     init_db()
